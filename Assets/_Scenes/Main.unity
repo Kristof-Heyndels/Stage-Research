@@ -156,8 +156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStorage: {fileID: 1627443188}
-  leftController: {fileID: 0}
-  rightController: {fileID: 0}
 --- !u!1 &215713699
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +228,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 215713699}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -448,9 +446,10 @@ GameObject:
   - component: {fileID: 1000803431}
   - component: {fileID: 1000803434}
   - component: {fileID: 1000803433}
+  - component: {fileID: 1000803436}
   - component: {fileID: 1000803432}
   - component: {fileID: 1000803435}
-  - component: {fileID: 1000803436}
+  - component: {fileID: 1000803437}
   m_Layer: 0
   m_Name: Phone
   m_TagString: Untagged
@@ -466,7 +465,7 @@ Transform:
   m_GameObject: {fileID: 1000803430}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0.25}
-  m_LocalScale: {x: 0.1, y: 0.2, z: 0.001}
+  m_LocalScale: {x: 0.1, y: 0.2, z: 0.003}
   m_Children:
   - {fileID: 1130064250}
   m_Father: {fileID: 113257382}
@@ -552,10 +551,21 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.5
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &1000803437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1000803430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe85ca42d90d4f4eb120facb48ae4ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1075788859
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,7 +638,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1075788859}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

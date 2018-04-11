@@ -2,6 +2,8 @@
 
 public class Phone : MonoBehaviour
 {
+	private float offset;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -11,9 +13,12 @@ public class Phone : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		offset = GameObject.FindGameObjectWithTag("MainCamera").transform.eulerAngles.y;
+
 		if (PlayerStorage.isInit() && !gameObject.GetComponent<OVRGrabbable>().isGrabbed)
 		{
 			transform.position = PlayerStorage.pocketLocation();
+			transform.eulerAngles = new Vector3(0, 90 + offset, 0);
 		}
 	}
 
@@ -31,13 +36,16 @@ public class Phone : MonoBehaviour
 
 	void OnTriggerExit(Collider other)
 	{
-		if (other.CompareTag("Body") && gameObject.GetComponent<OVRGrabbable>().isGrabbed)
+		if (!PlayerStorage.isInit())
 		{
-			PlayerStorage.pocketEnabled(false);
-		}
-		else if (other.CompareTag("Pocket") && !gameObject.GetComponent<OVRGrabbable>().isGrabbed)
-		{
-			PlayerStorage.checkInit();
+			if (other.CompareTag("Body") && gameObject.GetComponent<OVRGrabbable>().isGrabbed)
+			{
+				PlayerStorage.pocketEnabled(false);
+			}
+			else if (other.CompareTag("Pocket") && !gameObject.GetComponent<OVRGrabbable>().isGrabbed)
+			{
+				PlayerStorage.checkInit();
+			}
 		}
 	}
 }

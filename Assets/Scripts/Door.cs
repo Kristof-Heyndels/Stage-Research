@@ -15,6 +15,7 @@ public class Door : MonoBehaviour
 		if (PlayerStorage.isInit() && transform.position.y < 5)
 		{
 			transform.position = new Vector3(transform.position.x, transform.position.y + 0.002f, transform.position.z);
+			Destroy(GameObject.FindGameObjectWithTag("StopGroup"));
 		}
 	}
 }

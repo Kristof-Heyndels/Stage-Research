@@ -3,9 +3,10 @@
 public class PlayerStorage : MonoBehaviour
 {
 	public GameObject head;
-	public GameObject body;
+	public GameObject bodyPrefap;
 	public GameObject pocketPrefab;
 
+	public static GameObject body;
 	public static GameObject pocket;
 
 	private static bool init;
@@ -13,6 +14,7 @@ public class PlayerStorage : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		body = Instantiate(bodyPrefap, transform);
 		pocket = Instantiate(pocketPrefab, body.transform);
 		init = false;
 	}
@@ -24,8 +26,7 @@ public class PlayerStorage : MonoBehaviour
 		body.transform.position = new Vector3(head.transform.position.x, head.transform.position.y - 0.5f, head.transform.position.z);
 
 		head.transform.localEulerAngles = new Vector3(Camera.main.transform.localEulerAngles.x, Camera.main.transform.localEulerAngles.y, Camera.main.transform.localEulerAngles.z);
-		body.transform.eulerAngles = Vector3.zero;
-		pocket.transform.eulerAngles = Vector3.zero;
+		body.transform.eulerAngles = new Vector3(0, body.transform.eulerAngles.y, 0);
 	}
 
 	public static void pocketEnabled(bool enable)

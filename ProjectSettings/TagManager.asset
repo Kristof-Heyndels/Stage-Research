@@ -8,6 +8,8 @@ TagManager:
   - Pocket
   - TeleportIgnore
   - StopGroup
+  - DoorTrigger
+  - PhoneUI
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - UI
   - 
   - 
-  - PlayerStorage
+  - InvisibleToCamera
   - 
   - 
   - 

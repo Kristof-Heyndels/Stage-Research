@@ -172,14 +172,19 @@ namespace VRTK
             }
         }
 
-        protected virtual void CheckRayHit(bool rayHit, RaycastHit pointerCollidedWith)
+        public virtual void CheckRayHit(bool rayHit, RaycastHit pointerCollidedWith)
         {
             if (rayHit)
-            {
-                PointerEnter(pointerCollidedWith);
+			{
+				PointerEnter(pointerCollidedWith);
 
                 destinationHit = pointerCollidedWith;
                 ChangeColor(validCollisionColor);
+
+	            if (pointerCollidedWith.collider.gameObject.CompareTag("PhoneUI"))
+	            {
+					UIObjectFinder.Find(pointerCollidedWith.collider.gameObject);
+	            }
             }
         }
 

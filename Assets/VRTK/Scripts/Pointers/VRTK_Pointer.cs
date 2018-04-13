@@ -117,9 +117,9 @@ namespace VRTK
             {
                 ActivationButtonReleased(this, e);
             }
-        }
+		}
 
-        public virtual void OnSelectionButtonPressed(ControllerInteractionEventArgs e)
+		public virtual void OnSelectionButtonPressed(ControllerInteractionEventArgs e)
         {
             if (SelectionButtonPressed != null)
             {
@@ -188,7 +188,13 @@ namespace VRTK
                     OnDestinationMarkerHover(destinationEventArgs);
                 }
                 StartUseAction(givenHit.transform);
-            }
+
+				//NOTE(Kristof): Triggering on PhoneUI tag
+	            if (givenHit.collider.gameObject.CompareTag("PhoneUI") && activationButtonPressed)
+	            {
+		            UIObjectFinder.Find(givenHit.collider.gameObject);
+	            }
+			}
         }
 
         /// <summary>
@@ -519,7 +525,7 @@ namespace VRTK
                 controllerReference = e.controllerReference;
                 Toggle(true);
             }
-        }
+		}
 
         protected virtual void DoActivationButtonReleased(object sender, ControllerInteractionEventArgs e)
         {

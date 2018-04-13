@@ -180,11 +180,6 @@ namespace VRTK
 
                 destinationHit = pointerCollidedWith;
                 ChangeColor(validCollisionColor);
-
-	            if (pointerCollidedWith.collider.gameObject.CompareTag("PhoneUI"))
-	            {
-					UIObjectFinder.Find(pointerCollidedWith.collider.gameObject);
-	            }
             }
         }
 

@@ -9,13 +9,15 @@ public class World : MonoBehaviour
 		Left
 	}
 
+
+	public Handedness handedness;
 	public GameObject localAvatar;
+	public GameObject playArea;
 	public GameObject phone;
 
 	public GameObject avatarGrabberLeft;
 	public GameObject avatarGrabberRight;
-
-	public Handedness handedness;
+	public GameObject settings;
 
 	private float oldPrimaryStick;
 	private float oldSecondaryStick;
@@ -23,13 +25,14 @@ public class World : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-
+		settings.SetActive(false);
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		//NOTE(Kristof): Rotating the avatar with the joysticks
+		if (!settings.activeSelf)
 		{
 			var turnAngle = 0f;
 
@@ -74,6 +77,14 @@ public class World : MonoBehaviour
 				phone.transform.localPosition = Vector3.zero;
 				phone.transform.localEulerAngles = new Vector3(45, 0, 0);
 			}
+		}
+
+		if (OVRInput.GetUp(OVRInput.Button.Start))
+		{
+			settings.SetActive(!settings.activeSelf);
+			playArea.SetActive(!playArea.activeSelf);
+			Pauser.Pause(!Pauser.isPaused);
+			;
 		}
 	}
 }

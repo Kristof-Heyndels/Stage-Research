@@ -29,6 +29,7 @@ public class World : MonoBehaviour
 	void Start()
 	{
 		settings.SetActive(false);
+		holoPanel.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -79,7 +80,10 @@ public class World : MonoBehaviour
 				holoPanel.transform.localPosition = new Vector3(-0.03f, 0.09f, -0.04f);
 				holoPanel.transform.localEulerAngles = new Vector3(-20, 55, -27);
 			}
+		}
 
+		//NOTE(Kristof): Toggling HoloPanel
+		{
 			if (OVRInput.GetUp(OVRInput.Button.Start))
 			{
 				holoPanel.SetActive(!holoPanel.activeSelf);

@@ -47,9 +47,12 @@ public class Scanner : MonoBehaviour
 	{
 		if (other.GetComponent<OvrAvatarTouchController>() != null && !Pauser.isPaused)
 		{
-			var door = transform.parent.parent.GetComponentInChildren<Door>().gameObject;
-			door.GetComponent<Door>().Open();
-			Destroy(transform.parent.gameObject);
+			var doorScript = transform.parent.parent.parent.GetComponentInChildren<Door>();
+			doorScript.Open();
+			if (doorScript.IsDataDoor())
+			{
+				World.scannerCounter++;
+			}
 		}
 	}
 }

@@ -15,11 +15,14 @@ public class OpenDoorButton : PhoneUI
 
 	public void Execute()
 	{
-
 		if (!Pauser.isPaused)
 		{
-			door.GetComponent<Door>().Open();
-			Destroy(gameObject);
+			var doorScript = door.GetComponent<Door>();
+			doorScript.Open();
+			if (doorScript.IsDataDoor())
+			{
+				World.buttonCounter++;
+			}
 		}
 	}
 }

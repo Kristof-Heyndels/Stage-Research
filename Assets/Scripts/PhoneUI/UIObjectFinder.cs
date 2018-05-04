@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class UIObjectFinder {
 
@@ -7,7 +8,12 @@ public class UIObjectFinder {
 		if (obj.GetComponent<OpenDoorButton>() != null)
 		{
 			var script = (OpenDoorButton) obj.GetComponent<PhoneUI>();
-			script.Execute();
+			var unityButton = script.gameObject.GetComponent<Button>();
+			if (unityButton.interactable)
+			{
+				script.Execute();
+				unityButton.interactable = false;
+			}
 		}
 	}
 

@@ -9,7 +9,8 @@ TagManager:
   - TeleportIgnore
   - StopGroup
   - DoorTrigger
-  - PhoneUI
+  - HoloUI
+  - Scanner
   layers:
   - Default
   - TransparentFX

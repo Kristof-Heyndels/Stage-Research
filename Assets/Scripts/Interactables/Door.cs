@@ -1,13 +1,49 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+	public GameObject HandScannerPrefab;
+	public GameObject DoorTriggerPrefab;
+
+	private GameObject scanner;
+	private GameObject trigger;
+
+	private Vector3 closedPosition;
 	private bool shouldOpen;
+	private bool dataDoor;
 
 	// Use this for initialization
 	void Start()
 	{
+		closedPosition = transform.position;
+		Init(transform.parent);
+	}
 
+	private void Init(Transform parent)
+	{
+		var noScanner = true;
+		var noTrigger = true;
+
+		shouldOpen = false;
+		dataDoor = true;
+
+		if (HandScannerPrefab != null)
+		{
+			scanner = Instantiate(HandScannerPrefab, parent);
+			noScanner = false;
+		}
+
+		if (DoorTriggerPrefab != null)
+		{
+			trigger = Instantiate(DoorTriggerPrefab, parent);
+			noTrigger = false;
+		}
+
+		if (noScanner || noTrigger)
+		{
+			dataDoor = false;
+		}
 	}
 
 	// Update is called once per frame
@@ -23,13 +59,29 @@ public class Door : MonoBehaviour
 	public void Open()
 	{
 		shouldOpen = true;
-		for (int i = 0; i < transform.parent.childCount; i++)
+
+		if (HandScannerPrefab != null)
 		{
-			var child = transform.parent.GetChild(i);
-			if (child.CompareTag("DoorTrigger"))
-			{
-				Destroy(child.gameObject);
-			}
+			Destroy(scanner);
 		}
+
+		if (DoorTriggerPrefab != null)
+		{
+			Destroy(trigger);
+		}
+
+		StartCoroutine(Close());
+	}
+
+	public IEnumerator Close()
+	{
+		yield return new WaitForSeconds(20);
+		transform.position = closedPosition;
+		Init(transform.parent);
+	}
+
+	public bool IsDataDoor()
+	{
+		return dataDoor;
 	}
 }

@@ -11,13 +11,16 @@ public class World : MonoBehaviour
 
 
 	public Handedness handedness;
-	public GameObject localAvatar;
+	public GameObject cameraRig;
 	public GameObject playArea;
-	public GameObject phone;
+	public GameObject holoPanel;
 
 	public GameObject avatarGrabberLeft;
 	public GameObject avatarGrabberRight;
 	public GameObject settings;
+
+	public static int scannerCounter = 0;
+	public static int buttonCounter = 0;
 
 	private float oldPrimaryStick;
 	private float oldSecondaryStick;
@@ -31,7 +34,7 @@ public class World : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//NOTE(Kristof): Rotating the avatar with the joysticks
+		//NOTE(Kristof): Rotating with the joysticks
 		if (!settings.activeSelf)
 		{
 			var turnAngle = 0f;
@@ -56,35 +59,31 @@ public class World : MonoBehaviour
 
 			oldPrimaryStick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x;
 			oldSecondaryStick = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x;
-
-			localAvatar.transform.localEulerAngles = new Vector3(localAvatar.transform.localEulerAngles.x,
-				localAvatar.transform.localEulerAngles.y + turnAngle, localAvatar.transform.localEulerAngles.z);
+			cameraRig.transform.localEulerAngles = new Vector3(cameraRig.transform.localEulerAngles.x,
+				cameraRig.transform.localEulerAngles.y + turnAngle, cameraRig.transform.localEulerAngles.z);
 		}
 
-		//NOTE(Kristof): Grabbing the phone
+		//NOTE(Kristof): Grabbing the holoPanel
 		{
 			if (handedness == Handedness.Right)
 			{
-				//NOTE(Kristof): phone child left hand
-				phone.transform.parent = avatarGrabberLeft.transform.GetChild(0).transform;
-				phone.transform.localPosition = Vector3.zero;
-				phone.transform.localEulerAngles = new Vector3(45, 0, 0);
+				//NOTE(Kristof): holoPanel child left hand
+				holoPanel.transform.parent = avatarGrabberLeft.transform.GetChild(0).transform;
+				holoPanel.transform.localPosition = new Vector3(0.03f, 0.09f, -0.04f);
+				holoPanel.transform.localEulerAngles = new Vector3(-30, -40, 17);
 			}
 			else
 			{
-				//NOTE(Kristof): phone child right hand
-				phone.transform.parent = avatarGrabberRight.transform.GetChild(0).transform;
-				phone.transform.localPosition = Vector3.zero;
-				phone.transform.localEulerAngles = new Vector3(45, 0, 0);
+				//NOTE(Kristof): holoPanel child right hand
+				holoPanel.transform.parent = avatarGrabberRight.transform.GetChild(0).transform;
+				holoPanel.transform.localPosition = new Vector3(-0.03f, 0.09f, -0.04f);
+				holoPanel.transform.localEulerAngles = new Vector3(-20, 55, -27);
 			}
-		}
 
-		if (OVRInput.GetUp(OVRInput.Button.Start))
-		{
-			settings.SetActive(!settings.activeSelf);
-			playArea.SetActive(!playArea.activeSelf);
-			Pauser.Pause(!Pauser.isPaused);
-			;
+			if (OVRInput.GetUp(OVRInput.Button.Start))
+			{
+				holoPanel.SetActive(!holoPanel.activeSelf);
+			}
 		}
 	}
 }

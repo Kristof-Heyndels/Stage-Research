@@ -189,7 +189,7 @@ namespace VRTK
                 }
                 StartUseAction(givenHit.transform);
 
-				//NOTE(Kristof): Triggering on PhoneUI tag
+				//NOTE(Kristof): Triggering on HoloUI tag
 	            if (givenHit.collider.gameObject.CompareTag("HoloUI") && activationButtonPressed)
 	            {
 		            UIObjectFinder.Find(givenHit.collider.gameObject);

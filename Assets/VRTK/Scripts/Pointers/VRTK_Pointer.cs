@@ -193,6 +193,7 @@ namespace VRTK
 	            if (givenHit.collider.gameObject.CompareTag("HoloUI") && activationButtonPressed)
 	            {
 		            UIObjectFinder.Find(givenHit.collider.gameObject);
+		            UIObjectFinder.Hit = givenHit;
 	            }
 			}
         }

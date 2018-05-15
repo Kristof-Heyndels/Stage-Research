@@ -17,11 +17,9 @@ public class ButtonManager : MonoBehaviour
 
 	private List<GameObject> buttons;
 
-	// Use this for initialization
 	void Start()
 	{
-		buttons.Add(open);
-		buttons.Add(start);
+		buttons = new List<GameObject> { open, start };
 	}
 
 	// Update is called once per frame
@@ -35,7 +33,7 @@ public class ButtonManager : MonoBehaviour
 			}
 			open.SetActive(true);
 		}
-		else if (activeButton == ActiveButton.Start)
+		else if (activeButton == ActiveButton.Start && !start.activeSelf)
 		{
 			foreach (var b in buttons)
 			{

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UIObjectFinder
+public static class UIObjectFinder
 {
+
+	public static RaycastHit Hit { get; set; }
 
 	public static void Find(GameObject obj)
 	{
@@ -14,14 +16,24 @@ public class UIObjectFinder
 			{
 				var script = (OpenDoorButton)obj.GetComponent<HoloUI>();
 				script.Execute();
+				unityButton.interactable = false;
 			}
 			else if (obj.GetComponent<StartButton>() != null)
 			{
 				var script = (StartButton)obj.GetComponent<HoloUI>();
 				script.Execute();
+				unityButton.interactable = false;
 			}
-			unityButton.interactable = false;
+		}
+		if (obj.GetComponent<ColourDropdown>() != null)
+		{
+			var script = (ColourDropdown)obj.GetComponent<HoloUI>();
+			script.Execute();
+		}
+		else if (obj.GetComponent<DropItem>() != null)
+		{
+			var script = (DropItem)obj.GetComponent<HoloUI>();
+			script.Execute();
 		}
 	}
-
 }

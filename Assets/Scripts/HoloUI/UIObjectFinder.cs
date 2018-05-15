@@ -22,6 +22,10 @@ public class UIObjectFinder
 			}
 			unityButton.interactable = false;
 		}
+		if (obj.GetComponent<PatternSphere>() != null)
+		{
+			obj.GetComponent<PatternSphere>().Execute();
+		}
 	}
 
 }

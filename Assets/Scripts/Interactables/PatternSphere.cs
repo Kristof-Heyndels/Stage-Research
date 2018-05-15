@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
 
-public class PatternSphere : MonoBehaviour
+public class PatternSphere : HoloUI
 {
 
 
@@ -19,8 +19,10 @@ public class PatternSphere : MonoBehaviour
 
 	}
 
-	public void StartUsing(VRTK_InteractUse currentUsingObject = null)
+	public override void Execute()
 	{
-		Debug.LogFormat("Interacted: {0}", currentUsingObject);
+		Debug.LogFormat("Interacted: {0}", gameObject);
+		GetComponent<Renderer>().material.color = Color.green;
+		PatternLock.SphereHit(this, transform.parent.gameObject.GetComponent<PatternLock>());
 	}
 }

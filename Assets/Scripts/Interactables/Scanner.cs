@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
+public enum RotationDirection
+{
+	Left,
+	Right
+}
+
 public class Scanner : MonoBehaviour
 {
-	public enum RotationDirection
-	{
-		Left,
-		Right
-	}
 	public RotationDirection direction;
 	public float rotationSpeed;
 

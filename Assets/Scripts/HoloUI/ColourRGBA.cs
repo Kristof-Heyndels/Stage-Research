@@ -16,7 +16,8 @@ public static class ColourRGBA
 	public static Color black = SetColour(Color.black);
 
 	public static List<Color> colourList = new List<Color>
-		{ white,
+		{
+			white,
 			blue,
 			cyan,
 			grey,

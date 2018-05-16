@@ -24,6 +24,8 @@ public class ColourPickerTestManager : MonoBehaviour
 	public Dropdown colourDropdown;
 	public Text infoText;
 
+	public ColourCubesContainer colourCubeContainer;
+
 	private Color colourToSelect;
 
 	private TestTimer timer = new TestTimer();
@@ -49,7 +51,6 @@ public class ColourPickerTestManager : MonoBehaviour
 		{
 			if (!holoPanel.activeSelf)
 			{
-				infoText.text = "Engage the holographic cube to begin the next stage.";
 			}
 		}
 
@@ -88,13 +89,19 @@ public class ColourPickerTestManager : MonoBehaviour
 		Pauser.Pause(true);
 		colourPickerPanel.SetActive(true);
 
-		colourToSelect = ColourRGBA.magenta;
+		colourToSelect = ColourRGBA.colourList[rnd.Next(ColourRGBA.colourList.Count)];
 		HoloPanel.LogNotification("Starting test: COLOUR PICKER\nPlease select the colour: {0}", ColourRGBA.ToName(colourToSelect));
 	}
 
 	public void NextTest()
 	{
-		
+		foreach (var cube in colourCubeContainer.colourCubes)
+		{
+			cube.SetActive(true);
+		}
+		colourCubeContainer.colourCubes[0].SetActive(false);
+		preparingNext = false;
+		cubeTest = true;
 	}
 
 	public void ColourSelected(string colour)
@@ -102,40 +109,53 @@ public class ColourPickerTestManager : MonoBehaviour
 		var selectedColour = ColourRGBA.toRGBA(colour);
 		holoPanel.GetComponent<HoloPanel>().SetColour(selectedColour);
 
-		if (selectedColour == colourToSelect)
+		if (dropTest || cubeTest)
 		{
-			if (dropTest)
-			{
-				dropdownTimers[i] = timer.Time;
-				i++;
-			}
-			else if (cubeTest)
-			{
-				colourCubeTimers[i] = timer.Time;
-				i++;
-			}
-			timer.Reset();
-
-			if (i == 5)
+			if (selectedColour == colourToSelect)
 			{
 				if (dropTest)
 				{
-					dropTest = false;
-					preparingNext = true;
-					i = 0;
-					HoloPanel.LogNotification("Moving to next stage: COLOUR CUBES\nPlease close your Holo to continue.", ColourRGBA.ToName(colourToSelect));
+					dropdownTimers[i] = timer.Time;
+					i++;
 				}
 				else if (cubeTest)
 				{
-					//NOTE(Kristof): Finish this test
+					colourCubeTimers[i] = timer.Time;
+					i++;
 				}
-			}
-			else
-			{
-				colourToSelect = ColourRGBA.colourList[rnd.Next(ColourRGBA.colourList.Count)];
-				HoloPanel.LogNotification("Impressive for one of your kind.\nPlease select the next colour: {0}", ColourRGBA.ToName(colourToSelect));
+				timer.Reset();
+
+				if (i == 5)
+				{
+					if (dropTest)
+					{
+						dropTest = false;
+						preparingNext = true;
+						i = 0;
+						colourPickerPanel.SetActive(false);
+
+						HoloPanel.LogNotification("Moving to next stage ...");
+						infoText.text = "Engage the holographic cube to begin the next stage.";
+
+						colourCubeContainer.colourCubes[0].SetActive(true);
+						colourCubeContainer.transform.position = new Vector3(Camera.main.transform.position.x - 0.6f, colourCubeContainer.transform.position.y, Camera.main.transform.position.z);
+					}
+					else if (cubeTest)
+					{
+						//NOTE(Kristof): Finish this test
+					}
+				}
+				else
+				{
+					colourToSelect = ColourRGBA.colourList[rnd.Next(ColourRGBA.colourList.Count)];
+					HoloPanel.LogNotification("Please select the next colour: {0}", ColourRGBA.ToName(colourToSelect));
+				}
 			}
 		}
 	}
 
+	public bool IsTesting()
+	{
+		return dropTest || preparingNext || cubeTest;
+	}
 }

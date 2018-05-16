@@ -34,7 +34,7 @@ public class HoloPanel : MonoBehaviour
 			openButton.Door = other.transform.parent.GetComponentInChildren<Door>().gameObject;
 			openButton.gameObject.GetComponent<Button>().interactable = true;
 		}
-		else if (other.gameObject.name.Equals("ColourPickerArea"))
+		else if (other.gameObject.name.Equals("ColourPickerArea") && !colourPickerTestManager.IsTesting())
 		{
 			ButtonManager.activeButton = ActiveButton.Start;
 			startButton.gameObject.GetComponent<Button>().interactable = true;

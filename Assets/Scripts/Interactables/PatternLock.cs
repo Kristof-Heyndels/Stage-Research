@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+
 using UnityEngine;
 
 public class PatternLock : MonoBehaviour
@@ -13,6 +14,7 @@ public class PatternLock : MonoBehaviour
 	public List<Vector3> historyPosition;
 	public LineRenderer lineRenderer;
 
+	private static System.Diagnostics.Stopwatch stopwatch;
 	private static List<PatternLock> Locks;
 
 	// Use this for initialization
@@ -31,11 +33,17 @@ public class PatternLock : MonoBehaviour
 		{
 			Debug.Log("Trigger is released, dropping input");
 			inUse = false;
+			ClearPattern();
 		}
 	}
 	void ClearPattern()
 	{
-		Debug.Log("Clearing pattern");
+		// Note(Lander): inUse has to be false, this is safeguard
+		if (inUse) return;
+
+		stopwatch.Stop();
+		Debug.LogFormat("Clearing pattern. Time elapsed: {0}", stopwatch.Elapsed);
+
 
 		// NOTE(Lander): clear the visuals pattern on screen
 		lineRenderer.SetPositions(historyPosition.ToArray());
@@ -49,6 +57,8 @@ public class PatternLock : MonoBehaviour
 		if (parent.historySphere.Count == 0)
 		{
 			parent.inUse = true;
+			stopwatch.Reset();
+			stopwatch.Start();
 			parent.historySphere.Clear();
 			parent.historyPosition.Clear();
 		}

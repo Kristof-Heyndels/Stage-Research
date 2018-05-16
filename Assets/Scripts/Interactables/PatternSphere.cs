@@ -23,6 +23,10 @@ public class PatternSphere : HoloUI
 	{
 		Debug.LogFormat("Interacted: {0}", gameObject);
 		GetComponent<Renderer>().material.color = Color.green;
-		PatternLock.SphereHit(this, transform.parent.gameObject.GetComponent<PatternLock>());
+		var parent = transform.parent.gameObject.GetComponent<PatternLock>();
+		if (!parent.history.Contains(this))
+		{
+			PatternLock.SphereHit(this, parent);
+		}
 	}
 }

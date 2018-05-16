@@ -8,12 +8,16 @@ public class PatternLock : MonoBehaviour
 	public int gridSize;
 	public List<GameObject> spheresRaw;
 	public List<PatternSphere> history;
+	public LineRenderer lineRenderer;
+
+	private int index;
 
 	private static List<PatternLock> Locks;
 
 	// Use this for initialization
 	void Start()
 	{
+		index = 0;
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
 	}
@@ -26,11 +30,12 @@ public class PatternLock : MonoBehaviour
 
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
-		if (!parent.spheresRaw.Contains(g.gameObject))
-		{
-			parent.history.Add(g);
+		parent.history.Add(g);
+		parent.index++;
+		Debug.Log(parent.history);
 
-			Debug.Log(parent.history);
-		}
+		parent.lineRenderer.SetPosition(parent.index, g.transform.position );
+		
+
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class PatternLock : MonoBehaviour
@@ -34,7 +35,25 @@ public class PatternLock : MonoBehaviour
 		parent.index++;
 		Debug.Log(parent.history);
 
-		parent.lineRenderer.SetPosition(parent.index, g.transform.position );
+		//var positions = new[]
+		//{
+		//	parent.history[0].gameObject.transform.position,
+		//	g.transform.position
+		//};
+
+		var positions = new List<Vector3>();
+		foreach (var sphere in parent.history)
+		{
+			var pos = sphere.gameObject.transform.position;
+			pos += new Vector3(0.02f, 0, 0);
+			positions.Add(pos);
+		}
+
+		if (positions.Count > 1)
+		{
+			parent.lineRenderer.positionCount = positions.Count;
+			parent.lineRenderer.SetPositions(positions.ToArray());
+		}
 		
 
 	}

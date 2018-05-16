@@ -15,6 +15,7 @@ public class PatternLock : MonoBehaviour
 	public List<PatternSphere> historySphere;
 	public List<Vector3> historyPosition;
 	public LineRenderer lineRenderer;
+	private int[] pass;
 
 	private float oldCon1;
 	private float oldCon2;
@@ -27,6 +28,8 @@ public class PatternLock : MonoBehaviour
 	{
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
+		// zig zag boven -> onder, links -> rechts
+		pass = new int[] { 0, 3, 6, 7, 4, 1, 2, 5, 8 };
 	}
 
 	// Update is called once per frame
@@ -37,14 +40,21 @@ public class PatternLock : MonoBehaviour
 
 		if (inUse && ((con1 < 0.5f && 0.5f < oldCon1) || (con2 < 0.5f && 0.5f < oldCon2)))
 		{
-			Debug.Log("Trigger is released, dropping input");
 			inUse = false;
 			ClearPattern();
+		}
+		if (!inUse && historySphere.Count != 0)
+		{
+
+			Debug.Log(historySphere);
+			historySphere.Clear();
+			historyPosition.Clear();
 		}
 
 		oldCon1 = con1;
 		oldCon2 = con2;
 	}
+
 	void ClearPattern()
 	{
 		// Note(Lander): inUse has to be false, this is safeguard
@@ -61,6 +71,32 @@ public class PatternLock : MonoBehaviour
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
 
+	bool CheckPattern()
+	{
+		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
+		if (inUse || historySphere.Count != pass.Length) return false;
+
+		for (var i = 0; i < pass.Length; i++)
+		{
+			var attempt = Int32.Parse(historySphere[i].gameObject.name);
+			var correct = pass[i];
+			Debug.LogFormat("checking: {0}, {1}", attempt, correct);
+
+			if (attempt != correct)
+			{
+				Debug.Log("pattern mismatch!");
+				return false;
+			}
+		}
+
+		Debug.Log("Pattern match!");
+		// note(Lander): reset
+		historySphere.Clear();
+		ClearPattern();
+
+		return true;
+	}
+
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
 
@@ -69,27 +105,17 @@ public class PatternLock : MonoBehaviour
 			parent.inUse = true;
 			stopwatch.Reset();
 			stopwatch.Start();
-			parent.historySphere.Clear();
-			parent.historyPosition.Clear();
+
 		}
 		else if (!parent.inUse)
 		{
 			parent.ClearPattern();
 			return;
 		}
-		Debug.Log("Continuing pattern");
 
 
 		parent.historySphere.Add(g);
 		parent.historyPosition.Add(g.transform.position + new Vector3(0.02f, 0, 0));
-
-		//var positions = new List<Vector3>();
-		//foreach (var sphere in parent.history)
-		//{
-		//	var pos = sphere.gameObject.transform.position;
-		//	pos += new Vector3(0.02f, 0, 0);
-		//	positions.Add(pos);
-		//}
 
 		if (parent.historyPosition.Count > 1)
 		{

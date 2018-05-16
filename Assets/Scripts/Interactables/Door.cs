@@ -5,9 +5,11 @@ public class Door : MonoBehaviour
 {
 	public GameObject HandScannerPrefab;
 	public GameObject DoorTriggerPrefab;
+	public GameObject PatternLockPrefab;
 
 	private GameObject scanner;
 	private GameObject trigger;
+	private GameObject patternLock;
 
 	private Vector3 closedPosition;
 	private bool shouldOpen;
@@ -24,6 +26,7 @@ public class Door : MonoBehaviour
 	{
 		var noScanner = true;
 		var noTrigger = true;
+		var noLock = true;
 
 		shouldOpen = false;
 		dataDoor = true;
@@ -38,6 +41,12 @@ public class Door : MonoBehaviour
 		{
 			trigger = Instantiate(DoorTriggerPrefab, parent);
 			noTrigger = false;
+		}
+		if (PatternLockPrefab != null)
+		{
+			patternLock = Instantiate(PatternLockPrefab, parent);
+			patternLock.transform.localPosition = new Vector3(8, -1, -3.50f);
+			noLock = false;
 		}
 
 		if (noScanner || noTrigger)
@@ -68,6 +77,10 @@ public class Door : MonoBehaviour
 		if (DoorTriggerPrefab != null)
 		{
 			Destroy(trigger);
+		}
+		if (PatternLockPrefab != null)
+		{
+			Destroy(patternLock);
 		}
 
 		StartCoroutine(Close());

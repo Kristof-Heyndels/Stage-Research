@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using System.Diagnostics;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 public class PatternLock : MonoBehaviour
 {
@@ -14,7 +16,10 @@ public class PatternLock : MonoBehaviour
 	public List<Vector3> historyPosition;
 	public LineRenderer lineRenderer;
 
-	private static System.Diagnostics.Stopwatch stopwatch;
+	private float oldCon1;
+	private float oldCon2;
+
+	private static Stopwatch stopwatch = new Stopwatch();
 	private static List<PatternLock> Locks;
 
 	// Use this for initialization
@@ -27,14 +32,18 @@ public class PatternLock : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (inUse && !(
-			OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) < 0.5 ||
-			OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 0.5))
+		var con1 = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);
+		var con2 = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger);
+
+		if (inUse && ((con1 < 0.5f && 0.5f < oldCon1) || (con2 < 0.5f && 0.5f < oldCon2)))
 		{
 			Debug.Log("Trigger is released, dropping input");
 			inUse = false;
 			ClearPattern();
 		}
+
+		oldCon1 = con1;
+		oldCon2 = con2;
 	}
 	void ClearPattern()
 	{
@@ -46,8 +55,9 @@ public class PatternLock : MonoBehaviour
 
 
 		// NOTE(Lander): clear the visuals pattern on screen
-		lineRenderer.SetPositions(historyPosition.ToArray());
+		historyPosition.Clear();
 		lineRenderer.positionCount = 0;
+		lineRenderer.SetPositions(historyPosition.ToArray());
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
 
@@ -67,7 +77,7 @@ public class PatternLock : MonoBehaviour
 			parent.ClearPattern();
 			return;
 		}
-		Debug.Log("Continueing pattern");
+		Debug.Log("Continuing pattern");
 
 
 		parent.historySphere.Add(g);

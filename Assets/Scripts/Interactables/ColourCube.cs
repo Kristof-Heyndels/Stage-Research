@@ -43,10 +43,11 @@ public class ColourCube : MonoBehaviour
 			{
 				colourTestManager.NextTest();
 			}
-		}
-		else
-		{
-
+			else
+			{
+				var colour = gameObject.GetComponent<Renderer>().material.color;
+				colourTestManager.ColourSelected(ColourRGBA.ToName(colour));
+			}
 		}
 	}
 }

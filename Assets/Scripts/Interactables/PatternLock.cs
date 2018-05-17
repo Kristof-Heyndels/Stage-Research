@@ -17,6 +17,8 @@ public class PatternLock : MonoBehaviour
 	public LineRenderer lineRenderer;
 	private int[] pass;
 
+	private float Con1;
+	private float Con2;
 	private float oldCon1;
 	private float oldCon2;
 
@@ -35,24 +37,26 @@ public class PatternLock : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		var con1 = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);
-		var con2 = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger);
+		Con1 = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger);
+		Con2 = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger);
 
-		if (inUse && ((con1 < 0.5f && 0.5f < oldCon1) || (con2 < 0.5f && 0.5f < oldCon2)))
+		if (inUse && ((Con1 < 0.5f && 0.5f < oldCon1) || (Con2 < 0.5f && 0.5f < oldCon2)))
 		{
 			inUse = false;
+			if (CheckPattern())
+			{
+				transform.parent.GetComponent<Door>().Open();
+			}
 			ClearPattern();
 		}
-		if (!inUse && historySphere.Count != 0)
+		if (!inUse)
 		{
-
 			Debug.Log(historySphere);
-			historySphere.Clear();
-			historyPosition.Clear();
+			//ClearPattern();
 		}
 
-		oldCon1 = con1;
-		oldCon2 = con2;
+		oldCon1 = Con1;
+		oldCon2 = Con2;
 	}
 
 	void ClearPattern()
@@ -66,15 +70,16 @@ public class PatternLock : MonoBehaviour
 
 		// NOTE(Lander): clear the visuals pattern on screen
 		historyPosition.Clear();
+		historySphere.Clear();
 		lineRenderer.positionCount = 0;
 		lineRenderer.SetPositions(historyPosition.ToArray());
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
 
-	bool CheckPattern()
+	private bool CheckPattern()
 	{
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		if (inUse || historySphere.Count != pass.Length) return false;
+		if (historySphere.Count != pass.Length) return false;
 
 		for (var i = 0; i < pass.Length; i++)
 		{
@@ -90,9 +95,6 @@ public class PatternLock : MonoBehaviour
 		}
 
 		Debug.Log("Pattern match!");
-		// note(Lander): reset
-		historySphere.Clear();
-		ClearPattern();
 
 		return true;
 	}
@@ -100,12 +102,11 @@ public class PatternLock : MonoBehaviour
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
 
-		if (parent.historySphere.Count == 0)
+		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f )))
 		{
 			parent.inUse = true;
 			stopwatch.Reset();
 			stopwatch.Start();
-
 		}
 		else if (!parent.inUse)
 		{
@@ -122,5 +123,24 @@ public class PatternLock : MonoBehaviour
 			parent.lineRenderer.positionCount = parent.historyPosition.Count;
 			parent.lineRenderer.SetPositions(parent.historyPosition.ToArray());
 		}
+
+		//// note(Lander): Abort when still inputting, Do not accept mismatching lengths
+		//Debug.LogFormat("history sphere: {0} pass length {1}", parent.historySphere.Count, parent.pass.Length);
+		//if (!parent.inUse || parent.historySphere.Count != parent.pass.Length) return;
+
+		//for (var i = 0; i < parent.pass.Length; i++)
+		//{
+		//	var attempt = Int32.Parse(parent.historySphere[i].gameObject.name);
+		//	var correct = parent.pass[i];
+		//	Debug.LogFormat("checking: {0}, {1}", attempt, correct);
+
+		//	if (attempt != correct)
+		//	{
+		//		Debug.Log("pattern mismatch!");
+		//		return;
+		//	}
+		//}
+
+		//Debug.Log("Pattern match!");
 	}
 }

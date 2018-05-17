@@ -19,11 +19,11 @@ public class HoloPanel : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		LogText = Instantiate(LogTextPrefab, transform.Find("LogPanel"));
-		button.GetComponent<Button>().interactable = false;
+		LogText = Instantiate(LogTextPrefab, transform.Find("BottomPanel").Find("LogPanel"));
+		//button.GetComponent<Button>().interactable = false;
 
-		colourPickerTestManager = transform.root.Find("ColourPickerTestManager").GetComponent<ColourPickerTestManager>();
-		SetColour(colour);
+		//colourPickerTestManager = transform.root.Find("ColourPickerTestManager").GetComponent<ColourPickerTestManager>();
+		//SetColour(colour);
 	}
 
 	// Update is called once per frame
@@ -80,6 +80,7 @@ public class HoloPanel : MonoBehaviour
 	public static void LogFormat(string message, params object[] arg)
 	{
 		LogText.GetComponent<Text>().text = string.Format(message, arg);
+		Debug.LogFormat(message, arg);
 	}
 
 }

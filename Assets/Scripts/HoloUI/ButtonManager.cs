@@ -15,7 +15,7 @@ public class ButtonManager : MonoBehaviour
 
 	public static ActiveButton activeButton;
 
-	private List<GameObject> buttons;
+	private List<GameObject> buttons = new List<GameObject>();
 
 	// Use this for initialization
 	void Start()

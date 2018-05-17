@@ -26,7 +26,6 @@ public class Door : MonoBehaviour
 	{
 		var noScanner = true;
 		var noTrigger = true;
-		var noLock = true;
 
 		shouldOpen = false;
 		dataDoor = true;
@@ -44,9 +43,7 @@ public class Door : MonoBehaviour
 		}
 		if (PatternLockPrefab != null)
 		{
-			patternLock = Instantiate(PatternLockPrefab, parent);
-			patternLock.transform.localPosition = new Vector3(8, -1, -3.50f);
-			noLock = false;
+			patternLock = Instantiate(PatternLockPrefab, parent.Find("DoorCube"));
 		}
 
 		if (noScanner || noTrigger)
@@ -72,18 +69,18 @@ public class Door : MonoBehaviour
 		if (HandScannerPrefab != null)
 		{
 			Destroy(scanner);
+			StartCoroutine(Close());
 		}
 
 		if (DoorTriggerPrefab != null)
 		{
 			Destroy(trigger);
+			StartCoroutine(Close());
 		}
 		if (PatternLockPrefab != null)
 		{
 			Destroy(patternLock);
 		}
-
-		StartCoroutine(Close());
 	}
 
 	public IEnumerator Close()

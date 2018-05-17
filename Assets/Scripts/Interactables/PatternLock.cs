@@ -15,23 +15,28 @@ public class PatternLock : MonoBehaviour
 	public List<PatternSphere> historySphere;
 	public List<Vector3> historyPosition;
 	public LineRenderer lineRenderer;
-	private int[] pass;
 
 	private float Con1;
 	private float Con2;
 	private float oldCon1;
 	private float oldCon2;
+	private bool patternSetter;
 
 	private static Stopwatch stopwatch = new Stopwatch();
 	private static List<PatternLock> Locks;
+	private static List<int> pass;
+	private static bool confirmationNeeded;
 
 	// Use this for initialization
 	void Start()
 	{
+		if(transform.parent.tag == "PatternSetter")
+		{
+			patternSetter = true;
+			
+		}
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
-		// zig zag boven -> onder, links -> rechts
-		pass = new int[] { 0, 3, 6, 7, 4, 1, 2, 5, 8 };
 	}
 
 	// Update is called once per frame
@@ -78,10 +83,21 @@ public class PatternLock : MonoBehaviour
 
 	private bool CheckPattern()
 	{
-		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		if (historySphere.Count != pass.Length) return false;
+		if (patternSetter && !confirmationNeeded)
+		{
+			foreach (var sphere in historySphere)
+			{
+				pass.Add(Int32.Parse(sphere.name));
+			}
 
-		for (var i = 0; i < pass.Length; i++)
+			confirmationNeeded = true;
+			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, confirmationNeeded ? "" : "NOT " );
+
+		}
+		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
+		if (historySphere.Count != pass.Count) return false;
+
+		for (var i = 0; i < pass.Count; i++)
 		{
 			var attempt = Int32.Parse(historySphere[i].gameObject.name);
 			var correct = pass[i];
@@ -92,6 +108,14 @@ public class PatternLock : MonoBehaviour
 				Debug.Log("pattern mismatch!");
 				return false;
 			}
+		}
+
+		if (confirmationNeeded)
+		{
+			confirmationNeeded = false;
+			patternSetter = false;
+			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, confirmationNeeded ? "" : "NOT " );
+			return true;
 		}
 
 		Debug.Log("Pattern match!");

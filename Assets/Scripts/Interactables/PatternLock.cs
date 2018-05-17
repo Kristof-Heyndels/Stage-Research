@@ -33,6 +33,8 @@ public class PatternLock : MonoBehaviour
 		if(transform.parent.tag == "PatternSetter")
 		{
 			patternSetter = true;
+			transform.localEulerAngles = new Vector3(0, 0, 90);
+			transform.localPosition += new Vector3(0, 0, -1);
 			
 		}
 		if (Locks == null) Locks = new List<PatternLock>();

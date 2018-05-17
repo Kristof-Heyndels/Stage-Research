@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using VRTK;
 
 public class World : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class World : MonoBehaviour
 		Left
 	}
 
-
 	public Handedness handedness;
 	public GameObject cameraRig;
 	public GameObject playArea;
@@ -19,6 +19,9 @@ public class World : MonoBehaviour
 	public GameObject avatarGrabberRight;
 	public GameObject settings;
 
+	public GameObject PlayArea;
+
+	public static VRTK_BasicTeleport teleporter;
 	public static int scannerCounter = 0;
 	public static int buttonCounter = 0;
 
@@ -30,6 +33,7 @@ public class World : MonoBehaviour
 	{
 		settings.SetActive(false);
 		holoPanel.SetActive(false);
+		teleporter = PlayArea.GetComponent<VRTK_BasicTeleport>();
 	}
 
 	// Update is called once per frame

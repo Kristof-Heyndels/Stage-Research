@@ -12,6 +12,7 @@ public class ColourCube : MonoBehaviour
 	public float hoverSpeed;
 
 	public bool isStartCube;
+	public bool fakeCube;
 
 	private float pingpong = 1;
 
@@ -30,7 +31,8 @@ public class ColourCube : MonoBehaviour
 
 			if (transform.localPosition.y < hoverRange)
 			{
-				transform.localPosition = new Vector3(transform.localPosition.x, Mathf.PingPong(pingpong, hoverRange) / 100, transform.localPosition.z);
+				transform.localPosition = new Vector3(transform.localPosition.x, Mathf.PingPong(pingpong, hoverRange) / 100,
+					transform.localPosition.z);
 			}
 		}
 	}
@@ -43,11 +45,22 @@ public class ColourCube : MonoBehaviour
 			{
 				colourTestManager.NextTest();
 			}
+			else if (fakeCube)
+			{
+				transform.parent.Find("EmptyTestArea").GetComponent<EmptyTest>().Init();
+			}
 			else
 			{
 				var colour = gameObject.GetComponent<Renderer>().material.color;
 				colourTestManager.ColourSelected(ColourRGBA.ToName(colour));
+				gameObject.GetComponent<Renderer>().enabled = false;
 			}
 		}
+	}
+
+	void OnTriggerExit(Collider other)
+	{
+		if (isStartCube) return;
+		gameObject.GetComponent<Renderer>().enabled = true;
 	}
 }

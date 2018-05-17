@@ -8,7 +8,7 @@
 		{
 			if (ColourPickerTest != null)
 			{
-				ColourPickerTest.BeginTest();
+				if (!ColourPickerTest.testComplete) ColourPickerTest.BeginTest();
 				ColourPickerTest = null;
 			}
 		}

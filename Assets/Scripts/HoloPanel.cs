@@ -38,10 +38,13 @@ public class HoloPanel : MonoBehaviour
 		{
 			ButtonManager.activeButton = ActiveButton.Start;
 			startButton.gameObject.GetComponent<Button>().interactable = true;
-
-			colourPickerTestManager.enabled = true;
 			startButton.ColourPickerTest = colourPickerTestManager;
-			colourPickerTestManager.infoText.text = "Engage the button to begin test procedure";
+
+			if (!colourPickerTestManager.testComplete)
+			{
+				colourPickerTestManager.enabled = true;
+				colourPickerTestManager.infoText.text = "Engage the button to begin test procedure";
+			}
 		}
 	}
 

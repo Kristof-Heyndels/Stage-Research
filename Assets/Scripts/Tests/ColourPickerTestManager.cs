@@ -36,6 +36,7 @@ public class ColourPickerTestManager : MonoBehaviour
 	private bool dropTest;
 	private bool preparingNext;
 	private bool cubeTest;
+	public bool testComplete;
 
 	static System.Random rnd = new System.Random();
 
@@ -47,13 +48,6 @@ public class ColourPickerTestManager : MonoBehaviour
 			timer.Next(Time.deltaTime);
 		}
 
-		if (preparingNext)
-		{
-			if (!holoPanel.activeSelf)
-			{
-			}
-		}
-
 		if (dropTest)
 		{
 			if (!holoPanel.activeSelf)
@@ -63,7 +57,15 @@ public class ColourPickerTestManager : MonoBehaviour
 		}
 		else if (cubeTest)
 		{
+			if (!holoPanel.activeSelf)
+			{
+				infoText.text = "Please, Subject #648915, keep the Holo open.";
+			}
+		}
 
+		if (testComplete)
+		{
+			infoText.text = "[DATA GATHERED]";
 		}
 	}
 
@@ -102,6 +104,9 @@ public class ColourPickerTestManager : MonoBehaviour
 		colourCubeContainer.colourCubes[0].SetActive(false);
 		preparingNext = false;
 		cubeTest = true;
+
+		colourToSelect = ColourRGBA.colourList[rnd.Next(ColourRGBA.colourList.Count)];
+		HoloPanel.LogNotification("Starting test: COLOUR PICKER\nPlease select the colour: {0}", ColourRGBA.ToName(colourToSelect));
 	}
 
 	public void ColourSelected(string colour)
@@ -143,11 +148,20 @@ public class ColourPickerTestManager : MonoBehaviour
 					else if (cubeTest)
 					{
 						//NOTE(Kristof): Finish this test
+						HoloPanel.LogNotification("TEST COMPLETE.\nImpressive, for one of your kind.");
+						infoText.text = "[DATA GATHERED]";
+						colourPickerPanel.SetActive(true);
+
+						Pauser.Pause(false);
+
+						cubeTest = false;
+						testComplete = true;
 					}
 				}
 				else
 				{
-					colourToSelect = ColourRGBA.colourList[rnd.Next(ColourRGBA.colourList.Count)];
+					var index = rnd.Next(ColourRGBA.colourList.Count);
+					colourToSelect = ColourRGBA.colourList[index];
 					HoloPanel.LogNotification("Please select the next colour: {0}", ColourRGBA.ToName(colourToSelect));
 				}
 			}

@@ -31,6 +31,7 @@ public class HoloPanel : MonoBehaviour
 		if (other.gameObject.CompareTag("DoorTrigger"))
 		{
 			// can unlock gate
+			ButtonManager.activeButton = ActiveButton.Open;
 			openButton.Door = other.transform.parent.GetComponentInChildren<Door>().gameObject;
 			openButton.gameObject.GetComponent<Button>().interactable = true;
 		}
@@ -44,6 +45,10 @@ public class HoloPanel : MonoBehaviour
 			{
 				colourPickerTestManager.enabled = true;
 				colourPickerTestManager.infoText.text = "Engage the button to begin test procedure";
+			}
+			else
+			{
+				startButton.gameObject.GetComponent<Button>().interactable = false;
 			}
 		}
 	}

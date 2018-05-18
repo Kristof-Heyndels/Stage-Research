@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
 using VRTK;
 
 public class World : MonoBehaviour
@@ -33,12 +37,28 @@ public class World : MonoBehaviour
 	private float oldSecondaryStick;
 	private bool doorOpened;
 
+	public static string results = @"C:\Users\Stagiairs\Documents\DemoResults.csv";
+	public static int testID;
+
 	// Use this for initialization
 	void Start()
 	{
 		settings.SetActive(false);
 		holoPanel.SetActive(false);
 		teleporter = playArea.GetComponent<VRTK_BasicTeleport>();
+
+		using (var reader = new StreamReader(results)) 
+		{
+			var idList = new List<string>();
+			while (!reader.EndOfStream)
+			{
+				var line = reader.ReadLine();
+				var values = line.Split(';');
+
+				idList.Add(values[0]);
+			}
+			testID = Convert.ToInt32(idList.Last()) + 1;
+		}
 	}
 
 	// Update is called once per frame

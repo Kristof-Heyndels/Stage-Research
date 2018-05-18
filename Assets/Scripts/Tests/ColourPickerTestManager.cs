@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,7 +60,7 @@ public class ColourPickerTestManager : MonoBehaviour
 		{
 			if (!holoPanel.activeSelf)
 			{
-				infoText.text = "Please, Subject #648915, keep the Holo open.";
+				infoText.text = string.Format("Please, Subject #{0}, keep the Holo open.", World.testID);
 			}
 		}
 
@@ -85,6 +86,7 @@ public class ColourPickerTestManager : MonoBehaviour
 			"Red",
 			"Yellow"
 		};
+		colours.Sort();
 		colourDropdown.ClearOptions();
 		colourDropdown.AddOptions(colours);
 
@@ -137,6 +139,7 @@ public class ColourPickerTestManager : MonoBehaviour
 						dropTest = false;
 						preparingNext = true;
 						i = 0;
+						colourPickerPanel.GetComponentInChildren<Dropdown>().Hide();
 						colourPickerPanel.SetActive(false);
 
 						HoloPanel.LogNotification("Moving to next stage ...");

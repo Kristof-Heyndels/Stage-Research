@@ -974,6 +974,7 @@ GameObject:
   - component: {fileID: 69138317}
   - component: {fileID: 69138316}
   - component: {fileID: 69138315}
+  - component: {fileID: 69138319}
   m_Layer: 0
   m_Name: DoorCube
   m_TagString: Untagged
@@ -1010,6 +1011,7 @@ MonoBehaviour:
   DoorTriggerPrefab: {fileID: 1105715571822626, guid: 6b086b4b8f6ecf74a97e52b5bd5a9763,
     type: 2}
   lockedDoor: 0
+  endDemo: {fileID: 69138319}
 --- !u!23 &69138316
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1063,6 +1065,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 69138313}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &69138319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 69138313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ddfd2471c1bc549a0dac620d92b1e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &72133524
 GameObject:
   m_ObjectHideFlags: 0
@@ -8195,6 +8208,7 @@ MonoBehaviour:
     type: 2}
   DoorTriggerPrefab: {fileID: 0}
   lockedDoor: 0
+  endDemo: {fileID: 0}
 --- !u!1 &622693598
 GameObject:
   m_ObjectHideFlags: 0
@@ -16142,6 +16156,7 @@ MonoBehaviour:
   DoorTriggerPrefab: {fileID: 1105715571822626, guid: 6b086b4b8f6ecf74a97e52b5bd5a9763,
     type: 2}
   lockedDoor: 1
+  endDemo: {fileID: 0}
 --- !u!23 &1305205565
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -16496,6 +16511,7 @@ MonoBehaviour:
   DoorTriggerPrefab: {fileID: 1105715571822626, guid: 6b086b4b8f6ecf74a97e52b5bd5a9763,
     type: 2}
   lockedDoor: 0
+  endDemo: {fileID: 0}
 --- !u!23 &1321408308
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -18987,6 +19003,7 @@ MonoBehaviour:
   DoorTriggerPrefab: {fileID: 1105715571822626, guid: 6b086b4b8f6ecf74a97e52b5bd5a9763,
     type: 2}
   lockedDoor: 0
+  endDemo: {fileID: 0}
 --- !u!23 &1541283269
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22925,6 +22942,7 @@ MonoBehaviour:
   DoorTriggerPrefab: {fileID: 1105715571822626, guid: 6b086b4b8f6ecf74a97e52b5bd5a9763,
     type: 2}
   lockedDoor: 0
+  endDemo: {fileID: 0}
 --- !u!23 &1837845551
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -7,6 +7,8 @@ public class Door : MonoBehaviour
 	public GameObject DoorTriggerPrefab;
 	public bool lockedDoor;
 
+	public EndDemo endDemo;
+
 	private GameObject scanner;
 	private GameObject trigger;
 
@@ -71,6 +73,11 @@ public class Door : MonoBehaviour
 		if (DoorTriggerPrefab != null)
 		{
 			Destroy(trigger);
+		}
+
+		if (endDemo != null)
+		{
+			endDemo.FinishDemo();
 		}
 
 		StartCoroutine(Close());

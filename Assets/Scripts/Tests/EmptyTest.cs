@@ -25,6 +25,7 @@ public class EmptyTest : MonoBehaviour
 	{
 		lighting.SetActive(false);
 		infoText.text = "Your test is in another lab";
+		testComplete = true;
 		StartCoroutine(TurnOnLights());
 	}
 	private IEnumerator TurnOnLights()

@@ -30,12 +30,12 @@ public class PatternLock : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		if(transform.parent.tag == "PatternSetter")
+		if (transform.parent.tag == "PatternSetter")
 		{
 			patternSetter = true;
 			transform.localEulerAngles = new Vector3(0, 180, 0);
 			transform.localPosition += new Vector3(0, 0, -1);
-			
+
 		}
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
@@ -54,12 +54,12 @@ public class PatternLock : MonoBehaviour
 			{
 				transform.parent.GetComponent<Door>().Open();
 			}
+			else
+			{
+				spheresRaw.ForEach(sphere => sphere.GetComponent<Renderer>().material.color = Color.red);
+
+			}
 			ClearPattern();
-		}
-		if (!inUse)
-		{
-			Debug.Log(historySphere);
-			//ClearPattern();
 		}
 
 		oldCon1 = Con1;
@@ -87,7 +87,6 @@ public class PatternLock : MonoBehaviour
 	{
 		if (patternSetter && !confirmationNeeded)
 		{
-			Debug.Log("clearing pass");
 			pass.Clear();
 			foreach (var sphere in historySphere)
 			{
@@ -95,7 +94,6 @@ public class PatternLock : MonoBehaviour
 			}
 
 			confirmationNeeded = true;
-			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, !confirmationNeeded ? "" : "NOT " );
 			return false;
 		}
 
@@ -106,11 +104,10 @@ public class PatternLock : MonoBehaviour
 		{
 			var attempt = Int32.Parse(historySphere[i].gameObject.name);
 			var correct = pass[i];
-			Debug.LogFormat("checking: {0}, {1}", attempt, correct);
 
 			if (attempt != correct)
 			{
-				Debug.Log("pattern mismatch!");
+
 				return false;
 			}
 		}
@@ -119,11 +116,8 @@ public class PatternLock : MonoBehaviour
 		{
 			confirmationNeeded = false;
 			patternSetter = false;
-			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, confirmationNeeded ? "" : "NOT " );
 			return true;
 		}
-
-		Debug.Log("Pattern match!");
 
 		return true;
 	}
@@ -131,7 +125,7 @@ public class PatternLock : MonoBehaviour
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
 
-		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f )))
+		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))
 		{
 			parent.inUse = true;
 			stopwatch.Reset();
@@ -143,7 +137,6 @@ public class PatternLock : MonoBehaviour
 			return;
 		}
 
-
 		parent.historySphere.Add(g);
 		parent.historyPosition.Add(g.transform.position + new Vector3(0.02f, 0, 0));
 
@@ -153,23 +146,5 @@ public class PatternLock : MonoBehaviour
 			parent.lineRenderer.SetPositions(parent.historyPosition.ToArray());
 		}
 
-		//// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		//Debug.LogFormat("history sphere: {0} pass length {1}", parent.historySphere.Count, parent.pass.Length);
-		//if (!parent.inUse || parent.historySphere.Count != parent.pass.Length) return;
-
-		//for (var i = 0; i < parent.pass.Length; i++)
-		//{
-		//	var attempt = Int32.Parse(parent.historySphere[i].gameObject.name);
-		//	var correct = parent.pass[i];
-		//	Debug.LogFormat("checking: {0}, {1}", attempt, correct);
-
-		//	if (attempt != correct)
-		//	{
-		//		Debug.Log("pattern mismatch!");
-		//		return;
-		//	}
-		//}
-
-		//Debug.Log("Pattern match!");
 	}
 }

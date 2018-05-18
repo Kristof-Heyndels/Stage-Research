@@ -20,11 +20,11 @@ public class PatternLock : MonoBehaviour
 	private float Con2;
 	private float oldCon1;
 	private float oldCon2;
-	private bool patternSetter;
+	public bool patternSetter;
 
 	private static Stopwatch stopwatch = new Stopwatch();
 	private static List<PatternLock> Locks;
-	private static List<int> pass;
+	private static List<int> pass = new List<int>();
 	private static bool confirmationNeeded;
 
 	// Use this for initialization
@@ -33,7 +33,7 @@ public class PatternLock : MonoBehaviour
 		if(transform.parent.tag == "PatternSetter")
 		{
 			patternSetter = true;
-			transform.localEulerAngles = new Vector3(0, 0, 90);
+			transform.localEulerAngles = new Vector3(0, 180, 0);
 			transform.localPosition += new Vector3(0, 0, -1);
 			
 		}
@@ -87,15 +87,18 @@ public class PatternLock : MonoBehaviour
 	{
 		if (patternSetter && !confirmationNeeded)
 		{
+			Debug.Log("clearing pass");
+			pass.Clear();
 			foreach (var sphere in historySphere)
 			{
 				pass.Add(Int32.Parse(sphere.name));
 			}
 
 			confirmationNeeded = true;
-			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, confirmationNeeded ? "" : "NOT " );
-
+			Debug.LogFormat("New pattern({1}confirmed): {0}", pass, !confirmationNeeded ? "" : "NOT " );
+			return false;
 		}
+
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
 		if (historySphere.Count != pass.Count) return false;
 

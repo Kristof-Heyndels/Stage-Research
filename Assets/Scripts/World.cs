@@ -11,7 +11,6 @@ public class World : MonoBehaviour
 		Left
 	}
 
-
 	public Handedness handedness;
 	public GameObject cameraRig;
 	public GameObject playArea;

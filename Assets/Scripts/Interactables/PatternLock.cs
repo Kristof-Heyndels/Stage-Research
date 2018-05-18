@@ -70,8 +70,12 @@ public class PatternLock : MonoBehaviour
 		if (inUse) return;
 
 		stopwatch.Stop();
-		World.Record( "pattern:elapsed:{0}", stopwatch.Elapsed);
 
+		// Only log if stopwatch was set 
+		if (stopwatch.Elapsed.Milliseconds > 0)
+			World.Record("pattern:elapsed:{0}:door={1}", stopwatch.Elapsed, transform.parent.name);
+
+		stopwatch.Reset();
 
 		// NOTE(Lander): clear the visuals pattern on screen
 		historyPosition.Clear();
@@ -105,8 +109,7 @@ public class PatternLock : MonoBehaviour
 
 			if (attempt != correct)
 			{
-
-				World.Record("pattern:attempt:{0}", historySphere.Select(sphere => sphere.gameObject.name ).ToArray() );
+				World.Record("pattern:attempt:{0}", historySphere.Select(sphere => sphere.gameObject.name).ToList());
 				return false;
 			}
 		}
@@ -116,7 +119,7 @@ public class PatternLock : MonoBehaviour
 			confirmationNeeded = false;
 			patternSetter = false;
 
-			World.Record("pattern:set:{0}", pass);
+			World.Record("pattern:set:{0}", pass.ToArray());
 			return true;
 		}
 

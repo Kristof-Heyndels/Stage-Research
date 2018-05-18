@@ -156,6 +156,9 @@ public class ColourPickerTestManager : MonoBehaviour
 
 						cubeTest = false;
 						testComplete = true;
+
+						World.dropdownTimers = dropdownTimers;
+						World.colourCubeTimers = colourCubeTimers;
 					}
 				}
 				else

@@ -5,6 +5,7 @@ public class Door : MonoBehaviour
 {
 	public GameObject HandScannerPrefab;
 	public GameObject DoorTriggerPrefab;
+	public bool lockedDoor;
 
 	private GameObject scanner;
 	private GameObject trigger;
@@ -20,13 +21,15 @@ public class Door : MonoBehaviour
 		Init(transform.parent);
 	}
 
-	private void Init(Transform parent)
+	public void Init(Transform parent)
 	{
 		var noScanner = true;
 		var noTrigger = true;
 
 		shouldOpen = false;
 		dataDoor = true;
+
+		if (lockedDoor) return;
 
 		if (HandScannerPrefab != null)
 		{
@@ -75,7 +78,7 @@ public class Door : MonoBehaviour
 
 	public IEnumerator Close()
 	{
-		yield return new WaitForSeconds(20);
+		yield return new WaitForSeconds(10);
 		transform.position = closedPosition;
 		Init(transform.parent);
 	}

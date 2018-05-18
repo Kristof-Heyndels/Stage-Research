@@ -9,6 +9,8 @@ public class EmptyTest : MonoBehaviour
 	public GameObject lighting;
 	public Text infoText;
 
+	public bool testComplete;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -28,5 +30,7 @@ public class EmptyTest : MonoBehaviour
 	private IEnumerator TurnOnLights()
 	{
 		yield return new WaitForSeconds(5);
+		lighting.SetActive(true);
+
 	}
 }

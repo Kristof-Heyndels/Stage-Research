@@ -25,7 +25,7 @@ public class ColourCube : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (isStartCube)
+		if (isStartCube || fakeCube)
 		{
 			pingpong += 1 * hoverSpeed;
 
@@ -47,7 +47,8 @@ public class ColourCube : MonoBehaviour
 			}
 			else if (fakeCube)
 			{
-				transform.parent.Find("EmptyTestArea").GetComponent<EmptyTest>().Init();
+				transform.parent.parent.parent.GetComponent<EmptyTest>().Init();
+				Destroy(gameObject);
 			}
 			else
 			{

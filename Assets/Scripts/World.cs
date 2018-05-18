@@ -19,21 +19,26 @@ public class World : MonoBehaviour
 	public GameObject avatarGrabberRight;
 	public GameObject settings;
 
-	public GameObject PlayArea;
+	public Door closedDoor;
+	public ColourPickerTestManager colourPickerTestManager;
+	public EmptyTest emptyTest;
 
 	public static VRTK_BasicTeleport teleporter;
 	public static int scannerCounter = 0;
 	public static int buttonCounter = 0;
+	public static float[] dropdownTimers;
+	public static float[] colourCubeTimers;
 
 	private float oldPrimaryStick;
 	private float oldSecondaryStick;
+	private bool doorOpened;
 
 	// Use this for initialization
 	void Start()
 	{
 		settings.SetActive(false);
 		holoPanel.SetActive(false);
-		teleporter = PlayArea.GetComponent<VRTK_BasicTeleport>();
+		teleporter = playArea.GetComponent<VRTK_BasicTeleport>();
 	}
 
 	// Update is called once per frame
@@ -91,6 +96,17 @@ public class World : MonoBehaviour
 			if (OVRInput.GetUp(OVRInput.Button.Start))
 			{
 				holoPanel.SetActive(!holoPanel.activeSelf);
+			}
+		}
+
+		//NOTE(Kristof): Opening final door
+		{
+			if (colourPickerTestManager.testComplete && emptyTest.testComplete && !doorOpened)
+			{
+				closedDoor.lockedDoor = false;
+				closedDoor.Init(closedDoor.transform.parent);
+				Destroy(closedDoor.transform.GetChild(0).gameObject);
+				doorOpened = true;
 			}
 		}
 	}

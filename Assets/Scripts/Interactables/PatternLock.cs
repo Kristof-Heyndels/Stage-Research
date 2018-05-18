@@ -109,7 +109,7 @@ public class PatternLock : MonoBehaviour
 
 			if (attempt != correct)
 			{
-				World.Record("pattern:attempt:{0}", historySphere.Select(sphere => sphere.gameObject.name).ToList());
+				World.Record("pattern:attempt:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
 				return false;
 			}
 		}
@@ -119,7 +119,7 @@ public class PatternLock : MonoBehaviour
 			confirmationNeeded = false;
 			patternSetter = false;
 
-			World.Record("pattern:set:{0}", pass.ToArray());
+			World.Record("pattern:set:[{0}]", string.Join("," , pass.Select(i => i.ToString() ).ToArray()));
 			return true;
 		}
 

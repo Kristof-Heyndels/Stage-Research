@@ -73,7 +73,7 @@ public class PatternLock : MonoBehaviour
 
 		// Only log if stopwatch was set 
 		if (stopwatch.Elapsed.Milliseconds > 0)
-			World.Record("pattern:elapsed:{0}:door={1}", stopwatch.Elapsed, transform.parent.name);
+			World.Record("pattern:elapsed:{0}:tag={1}", stopwatch.Elapsed, gameObject.tag);
 
 		stopwatch.Reset();
 
@@ -84,6 +84,8 @@ public class PatternLock : MonoBehaviour
 		lineRenderer.SetPositions(historyPosition.ToArray());
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
+
+	// TODO(Lander): 1) pattern a, 2) pattern b, 2) pattern b fails
 
 	private bool CheckPattern()
 	{

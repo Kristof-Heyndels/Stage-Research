@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
 
 public class World : MonoBehaviour
 {
@@ -24,14 +26,22 @@ public class World : MonoBehaviour
 
 	private float oldPrimaryStick;
 	private float oldSecondaryStick;
+	private static string logFile;
+	private static string id;
 
 	// Use this for initialization
 	void Start()
 	{
 		settings.SetActive(false);
 		holoPanel.SetActive(false);
+		logFile = Path.Combine(Application.persistentDataPath, "data.log");
+		id = Guid.NewGuid().ToString().ToLower().Replace("-","");
+		Record("#start");
 	}
-
+	private void OnDestroy()
+	{
+		Record("#end");
+	}
 	// Update is called once per frame
 	void Update()
 	{
@@ -89,5 +99,11 @@ public class World : MonoBehaviour
 				holoPanel.SetActive(!holoPanel.activeSelf);
 			}
 		}
+	}
+
+	public static void Record(string msg, params object[] args)
+	{
+		var line = string.Format("{0}:{1}>{2}\n", DateTimeOffset.Now.UtcTicks, id, string.Format(msg, args));
+		File.AppendAllText(logFile, line);
 	}
 }

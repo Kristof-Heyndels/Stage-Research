@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class PatternLock : MonoBehaviour
 {
@@ -72,7 +70,7 @@ public class PatternLock : MonoBehaviour
 		if (inUse) return;
 
 		stopwatch.Stop();
-		Debug.LogFormat("Clearing pattern. Time elapsed: {0}", stopwatch.Elapsed);
+		World.Record( "pattern:elapsed:{0}", stopwatch.Elapsed);
 
 
 		// NOTE(Lander): clear the visuals pattern on screen
@@ -108,6 +106,7 @@ public class PatternLock : MonoBehaviour
 			if (attempt != correct)
 			{
 
+				World.Record("pattern:attempt:{0}", historySphere.Select(sphere => sphere.gameObject.name ).ToArray() );
 				return false;
 			}
 		}
@@ -116,6 +115,8 @@ public class PatternLock : MonoBehaviour
 		{
 			confirmationNeeded = false;
 			patternSetter = false;
+
+			World.Record("pattern:set:{0}", pass);
 			return true;
 		}
 
@@ -124,6 +125,7 @@ public class PatternLock : MonoBehaviour
 
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
+		// TODO(Lander): test behaviour of connecting two dots from different parents.
 
 		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))
 		{

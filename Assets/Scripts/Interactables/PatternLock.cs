@@ -73,7 +73,7 @@ public class PatternLock : MonoBehaviour
 
 		// Only log if stopwatch was set 
 		if (stopwatch.Elapsed.Milliseconds > 0)
-			World.Record("pattern:elapsed:{0}:tag={1}", stopwatch.Elapsed, gameObject.tag);
+			World.Record("pattern:elapsed:{0}:tag={1}", stopwatch.Elapsed, transform.parent.gameObject.tag);
 
 		stopwatch.Reset();
 
@@ -96,13 +96,14 @@ public class PatternLock : MonoBehaviour
 			{
 				pass.Add(Int32.Parse(sphere.name));
 			}
-
 			confirmationNeeded = true;
 			return false;
 		}
 
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		if (historySphere.Count != pass.Count) return false;
+		if (!patternSetter && historySphere.Count != pass.Count) return false;
+
+		World.Record("pattern:attempt:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
 
 		for (var i = 0; i < pass.Count; i++)
 		{
@@ -111,7 +112,15 @@ public class PatternLock : MonoBehaviour
 
 			if (attempt != correct)
 			{
-				World.Record("pattern:attempt:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
+				if (patternSetter && confirmationNeeded)
+				{
+					pass.Clear();
+					foreach (var sphere in historySphere)
+					{
+						pass.Add(Int32.Parse(sphere.name));
+					}
+				}
+
 				return false;
 			}
 		}
@@ -121,7 +130,7 @@ public class PatternLock : MonoBehaviour
 			confirmationNeeded = false;
 			patternSetter = false;
 
-			World.Record("pattern:set:[{0}]", string.Join("," , pass.Select(i => i.ToString() ).ToArray()));
+			World.Record("pattern:set:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			return true;
 		}
 

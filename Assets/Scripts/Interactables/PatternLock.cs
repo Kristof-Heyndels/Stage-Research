@@ -33,7 +33,6 @@ public class PatternLock : MonoBehaviour
 			patternSetter = true;
 			transform.localEulerAngles = new Vector3(0, 180, 0);
 			transform.localPosition += new Vector3(0, 0, -1);
-
 		}
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
@@ -104,12 +103,11 @@ public class PatternLock : MonoBehaviour
 		}
 
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		if (!patternSetter && historySphere.Count != pass.Count) return false;
-
+		if (!patternSetter && confirmationNeeded && historySphere.Count != pass.Count) return false;
 
 		for (var i = 0; i < pass.Count; i++)
 		{
-			var attempt = Int32.Parse(historySphere[i].gameObject.name);
+			var attempt = Int32.Parse(historySphere[i].gameObject.name); // TODO(Lander): prevent ArgumentOutOfBoundsException
 			var correct = pass[i];
 
 			if (attempt != correct)
@@ -130,6 +128,13 @@ public class PatternLock : MonoBehaviour
 		if (confirmationNeeded)
 		{
 			confirmationNeeded = false;
+
+			if (pass.Count < historySphere.Count)
+			{
+				pass.Clear();
+				return false;
+			}
+
 			patternSetter = false;
 
 			World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));

@@ -73,7 +73,7 @@ public class PatternLock : MonoBehaviour
 
 		// Only log if stopwatch was set 
 		if (stopwatch.Elapsed.Milliseconds > 0)
-			World.Record("pattern:elapsed:{0}:tag={1}", stopwatch.Elapsed, transform.parent.gameObject.tag);
+			World.Record("pattern:elapsed:{0}", stopwatch.Elapsed);
 
 		stopwatch.Reset();
 
@@ -89,6 +89,8 @@ public class PatternLock : MonoBehaviour
 
 	private bool CheckPattern()
 	{
+		World.Record("pattern:history:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
+
 		if (patternSetter && !confirmationNeeded)
 		{
 			pass.Clear();
@@ -96,6 +98,7 @@ public class PatternLock : MonoBehaviour
 			{
 				pass.Add(Int32.Parse(sphere.name));
 			}
+			World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			confirmationNeeded = true;
 			return false;
 		}
@@ -103,7 +106,6 @@ public class PatternLock : MonoBehaviour
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
 		if (!patternSetter && historySphere.Count != pass.Count) return false;
 
-		World.Record("pattern:attempt:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
 
 		for (var i = 0; i < pass.Count; i++)
 		{
@@ -130,7 +132,7 @@ public class PatternLock : MonoBehaviour
 			confirmationNeeded = false;
 			patternSetter = false;
 
-			World.Record("pattern:set:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			return true;
 		}
 

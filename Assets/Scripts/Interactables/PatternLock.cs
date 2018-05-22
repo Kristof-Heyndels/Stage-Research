@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PatternLock : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class PatternLock : MonoBehaviour
 	public List<GameObject> spheresRaw;
 	public List<PatternSphere> historySphere;
 	public List<Vector3> historyPosition;
+	public Text info;
 	public LineRenderer lineRenderer;
 
 	private float Con1;
@@ -36,6 +39,7 @@ public class PatternLock : MonoBehaviour
 		}
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);
+		info = transform.parent.GetComponentInChildren<Text>();
 	}
 
 	// Update is called once per frame
@@ -84,7 +88,8 @@ public class PatternLock : MonoBehaviour
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
 
-	// TODO(Lander): 1) pattern a, 2) pattern b, 2) pattern b fails
+	// DONE(Lander): 1) pattern a, 2) pattern b, 2) pattern b fails
+	// TODO(Lander): disable teleport when inUse
 
 	private bool CheckPattern()
 	{
@@ -98,6 +103,7 @@ public class PatternLock : MonoBehaviour
 				pass.Add(Int32.Parse(sphere.name));
 			}
 			World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			if(info) info.text = "PLEASE CONFIRM YOUR PERSONAL PATTERN ON THE GRID";
 			confirmationNeeded = true;
 			return false;
 		}
@@ -121,6 +127,7 @@ public class PatternLock : MonoBehaviour
 					}
 				}
 
+				if(info) info.text = confirmationNeeded ? "PLEASE REDRAW THE PATTERN TWICE TO CONFIRM" : "[ACCESS DENIED]";
 				return false;
 			}
 		}
@@ -137,10 +144,12 @@ public class PatternLock : MonoBehaviour
 
 			patternSetter = false;
 
+			if(info) info.text = "YOUR PERSONAL PATTERN IS NOW SET";
 			World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			return true;
 		}
 
+		if (info) info.text = "[ACCESS GRANTED]";
 		return true;
 	}
 

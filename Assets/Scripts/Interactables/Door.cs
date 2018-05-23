@@ -6,10 +6,12 @@ public class Door : MonoBehaviour
 	public GameObject HandScannerPrefab;
 	public GameObject DoorTriggerPrefab;
 	public GameObject PatternLockPrefab;
+	public GameObject PinLockPrefab;
 
 	private GameObject scanner;
 	private GameObject trigger;
 	private GameObject patternLock;
+	private GameObject pinLock;
 
 	private Vector3 closedPosition;
 	private bool shouldOpen;
@@ -44,6 +46,10 @@ public class Door : MonoBehaviour
 		if (PatternLockPrefab != null)
 		{
 			patternLock = Instantiate(PatternLockPrefab, parent.Find("DoorCube"));
+		}
+		if (PinLockPrefab != null)
+		{
+			pinLock = Instantiate(PinLockPrefab, parent.Find("DoorCube"));
 		}
 
 		if (noScanner || noTrigger)
@@ -80,6 +86,10 @@ public class Door : MonoBehaviour
 		if (PatternLockPrefab != null)
 		{
 			Destroy(patternLock);
+		}
+		if (PinLockPrefab != null)
+		{
+			Destroy(pinLock);
 		}
 	}
 

@@ -22,7 +22,8 @@ public class PinLock : MonoBehaviour
 	void Start()
 	{
 		buttons = Enumerable.Range(0, 10).ToArray();
-
+		info = transform.parent.GetComponentInChildren<Text>();
+		if (transform.parent.tag == "PinSetter") setter = true;
 		//Shuffle();
 	}
 
@@ -30,16 +31,6 @@ public class PinLock : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		/*
-		if (attempt.Count > 0)
-		{
-			info.text = new string('*', attempt.Count);
-		}
-		else if (needsConfirmation)
-		{
-			info.text = "Please insert again";
-		}
-		*/
 	}
 
 	private void Shuffle()
@@ -109,7 +100,7 @@ public class PinLock : MonoBehaviour
 		{
 			if (check)
 			{
-				//open door 
+				parent.GetComponentInParent<Door>().Open();
 			}
 		}
 		else
@@ -120,8 +111,15 @@ public class PinLock : MonoBehaviour
 				{
 					parent.needsConfirmation = false;
 					parent.setter = false;
-					parent.info.text = "pin confirmed"; 
+					parent.info.text = "pin confirmed";
 					parent.GetComponentInParent<Door>().Open();
+				}
+				else
+				{
+
+					parent.needsConfirmation = false;
+					pin.Clear();
+					parent.info.text = "pin mismatch, try again!";
 				}
 			}
 			else

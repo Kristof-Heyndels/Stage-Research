@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-// TODO(Lander): check if the line renderer is drawn correctly
+// TODO(Lander): check if the line renderer is drawn correctly /!\ IT IS NOT
 public class PatternLock : MonoBehaviour
 {
 
@@ -35,8 +35,8 @@ public class PatternLock : MonoBehaviour
 		if (transform.parent.tag == "PatternSetter")
 		{
 			patternSetter = true;
-			transform.localEulerAngles = new Vector3(0, 180, 0);
-			transform.localPosition += new Vector3(0, 0, -1);
+			//transform.localEulerAngles = new Vector3(0, 180, 0);
+			//transform.localPosition += new Vector3(0, 0, -1);
 		}
 		if (Locks == null) Locks = new List<PatternLock>();
 		Locks.Add(this);

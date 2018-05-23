@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PinButton : HoloUI
+﻿public class PinButton : HoloUI
 {
 	public float con1;
 	public float con2;

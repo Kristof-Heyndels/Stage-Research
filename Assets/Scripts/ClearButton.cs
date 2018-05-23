@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ClearButton : HoloUI {
+﻿public class ClearButton : HoloUI {
 
 	public float con1;
 	public float con2;

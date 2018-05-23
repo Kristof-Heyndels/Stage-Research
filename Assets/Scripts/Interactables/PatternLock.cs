@@ -13,8 +13,8 @@ public class PatternLock : MonoBehaviour
 	public int gridSize;
 	public bool inUse;
 	public List<GameObject> spheresRaw;
-	public List<PatternSphere> historySphere;
-	public List<Vector3> historyPosition;
+	public List<PatternSphere> attemptSphere;
+	public List<Vector3> attemptPosition;
 	public Text info;
 	public LineRenderer lineRenderer;
 
@@ -82,10 +82,10 @@ public class PatternLock : MonoBehaviour
 		stopwatch.Reset();
 
 		// NOTE(Lander): clear the visuals pattern on screen
-		historyPosition.Clear();
-		historySphere.Clear();
+		attemptPosition.Clear();
+		attemptSphere.Clear();
 		lineRenderer.positionCount = 0;
-		lineRenderer.SetPositions(historyPosition.ToArray());
+		lineRenderer.SetPositions(attemptPosition.ToArray());
 		spheresRaw.ForEach((i) => i.GetComponent<Renderer>().material.color = Color.white);
 	}
 
@@ -94,27 +94,27 @@ public class PatternLock : MonoBehaviour
 
 	private bool CheckPattern()
 	{
-		World.Record("pattern:history:[{0}]", string.Join(",", historySphere.Select(sphere => sphere.gameObject.name).ToArray()));
+		World.Record("pattern:attempt:[{0}]", string.Join(",", attemptSphere.Select(sphere => sphere.gameObject.name).ToArray()));
 
 		if (patternSetter && !confirmationNeeded)
 		{
 			pass.Clear();
-			foreach (var sphere in historySphere)
+			foreach (var sphere in attemptSphere)
 			{
 				pass.Add(Int32.Parse(sphere.name));
 			}
-			World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			//World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			if(info) info.text = "PLEASE CONFIRM YOUR PERSONAL PATTERN ON THE GRID";
 			confirmationNeeded = true;
 			return false;
 		}
 
 		// note(Lander): Abort when still inputting, Do not accept mismatching lengths
-		if (!patternSetter && confirmationNeeded && historySphere.Count != pass.Count) return false;
+		if (!patternSetter && confirmationNeeded && attemptSphere.Count != pass.Count) return false;
 
 		for (var i = 0; i < pass.Count; i++)
 		{
-			var attempt = Int32.Parse(historySphere[i].gameObject.name); // TODO(Lander): prevent ArgumentOutOfBoundsException
+			var attempt = Int32.Parse(attemptSphere[i].gameObject.name); // TODO(Lander): prevent ArgumentOutOfBoundsException
 			var correct = pass[i];
 
 			if (attempt != correct)
@@ -122,7 +122,7 @@ public class PatternLock : MonoBehaviour
 				if (patternSetter && confirmationNeeded)
 				{
 					pass.Clear();
-					foreach (var sphere in historySphere)
+					foreach (var sphere in attemptSphere)
 					{
 						pass.Add(Int32.Parse(sphere.name));
 					}
@@ -137,7 +137,7 @@ public class PatternLock : MonoBehaviour
 		{
 			confirmationNeeded = false;
 
-			if (pass.Count < historySphere.Count)
+			if (pass.Count < attemptSphere.Count)
 			{
 				pass.Clear();
 				return false;
@@ -146,7 +146,7 @@ public class PatternLock : MonoBehaviour
 			patternSetter = false;
 
 			if(info) info.text = "YOUR PERSONAL PATTERN IS NOW SET";
-			World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			//World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			return true;
 		}
 
@@ -159,7 +159,7 @@ public class PatternLock : MonoBehaviour
 		// TODO(Lander): test behaviour of connecting two dots from different parents.
 		parent.lineRenderer.enabled = true;
 
-		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))
+		if (parent.attemptSphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))
 		{
 			parent.inUse = true;
 			stopwatch.Reset();
@@ -171,13 +171,13 @@ public class PatternLock : MonoBehaviour
 			return;
 		}
 
-		parent.historySphere.Add(g);
-		parent.historyPosition.Add(g.transform.position + new Vector3(0.02f, 0, 0));
+		parent.attemptSphere.Add(g);
+		parent.attemptPosition.Add(g.transform.position + new Vector3(0.02f, 0, 0));
 
-		if (parent.historyPosition.Count > 1)
+		if (parent.attemptPosition.Count > 1)
 		{
-			parent.lineRenderer.positionCount = parent.historyPosition.Count;
-			parent.lineRenderer.SetPositions(parent.historyPosition.ToArray());
+			parent.lineRenderer.positionCount = parent.attemptPosition.Count;
+			parent.lineRenderer.SetPositions(parent.attemptPosition.ToArray());
 		}
 
 	}

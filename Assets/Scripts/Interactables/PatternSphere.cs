@@ -9,7 +9,7 @@ public class PatternSphere : HoloUI
 	{
 		GetComponent<Renderer>().material.color = Color.green;
 		var parent = transform.parent.gameObject.GetComponent<PatternLock>();
-		if (!parent.historySphere.Contains(this))
+		if (!parent.attemptSphere.Contains(this))
 		{
 			PatternLock.SphereHit(this, parent);
 		}

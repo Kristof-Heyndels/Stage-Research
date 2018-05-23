@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-// TODO(Lander): check if the line renderer is drawn correctly /!\ IT IS NOT
+// DONE(Lander): check if the line renderer is drawn correctly /!\ IT IS NOT
 public class PatternLock : MonoBehaviour
 {
 
@@ -103,7 +103,7 @@ public class PatternLock : MonoBehaviour
 			{
 				pass.Add(Int32.Parse(sphere.name));
 			}
-			//World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			World.Record("pattern:set:step-1:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			if(info) info.text = "PLEASE CONFIRM YOUR PERSONAL PATTERN ON THE GRID";
 			confirmationNeeded = true;
 			return false;
@@ -146,7 +146,7 @@ public class PatternLock : MonoBehaviour
 			patternSetter = false;
 
 			if(info) info.text = "YOUR PERSONAL PATTERN IS NOW SET";
-			//World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
+			World.Record("pattern:set:step-2:[{0}]", string.Join(",", pass.Select(i => i.ToString()).ToArray()));
 			return true;
 		}
 
@@ -156,7 +156,9 @@ public class PatternLock : MonoBehaviour
 
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
-		// TODO(Lander): test behaviour of connecting two dots from different parents.
+		// DONE(Lander): test behaviour of connecting two dots from different parents.
+		// Note(Lander): It's impossible to see two patternLocks at the same time.
+
 		parent.lineRenderer.enabled = true;
 
 		if (parent.attemptSphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))

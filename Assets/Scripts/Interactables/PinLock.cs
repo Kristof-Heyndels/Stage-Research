@@ -25,7 +25,7 @@ public class PinLock : MonoBehaviour
 		buttons = Enumerable.Range(0, 10).ToArray();
 		info = transform.parent.GetComponentInChildren<Text>();
 		if (transform.parent.tag == "PinSetter") setter = true;
-		Shuffle(); // TODO(Lander): this can be called before the others are initialised. 
+		Shuffle();
 	}
 
 	private void Shuffle()
@@ -83,7 +83,7 @@ public class PinLock : MonoBehaviour
 		var input = Int32.Parse(pinButton.GetComponentInChildren<Text>().text);
 		attempt.Add(input);
 		parent.info.text = new string('*', attempt.Count);
-		parent.Shuffle(); 
+		parent.Shuffle();
 	}
 
 	public static void Ok(PinLock parent)
@@ -91,7 +91,7 @@ public class PinLock : MonoBehaviour
 		if (attempt.Count == 0) return;
 		stopwatch.Stop();
 
-		World.Record("pincode:attempt:[{0}]", string.Join(",", attempt.Select(a => a.ToString()).ToArray()));
+		World.Record("pincode:attempt:[{0}]", string.Join(",", attempt.Select(i => i.ToString()).ToArray()));
 		World.Record("pincode:elapsed:{0}", stopwatch.Elapsed);
 		stopwatch.Reset();
 
@@ -101,7 +101,12 @@ public class PinLock : MonoBehaviour
 		{
 			if (check)
 			{
+				parent.info.text = "[ACCESS GRANTED]";
 				parent.GetComponentInParent<Door>().Open();
+			}
+			else
+			{
+				parent.info.text = "[ACCESS DENIED]";
 			}
 		}
 		else
@@ -114,6 +119,7 @@ public class PinLock : MonoBehaviour
 					parent.setter = false;
 					parent.info.text = "PIN CONFIRMED";
 					parent.GetComponentInParent<Door>().Open();
+					World.Record("pincode:set:step-2:[{0}]", string.Join(",", attempt.Select(i => i.ToString()).ToArray()));
 				}
 				else
 				{
@@ -125,15 +131,18 @@ public class PinLock : MonoBehaviour
 			}
 			else
 			{
-				if (3 < attempt.Count && attempt.Count < 9)
+				if (3 < attempt.Count && attempt.Count < 17)
 				{
-					pin = attempt.ToList(); // TODO(Lander): check if this copies by value, not reference
+					pin = attempt.ToList();
 					parent.needsConfirmation = true;
-					parent.info.text = "cONFIRM PIN";
+					parent.info.text = "CONFIRM PIN";
+					World.Record("pincode:set:step-1:[{0}]", string.Join(",", attempt.Select(i => i.ToString()).ToArray()));
 				}
 				else
 				{
-					parent.info.text = "PIN IS TOO SHORT";
+					parent.info.text = 3 < attempt.Count
+						? "PIN IS TOO SHORT"
+						: "PIN IS TOO LONG";
 				}
 			}
 		}

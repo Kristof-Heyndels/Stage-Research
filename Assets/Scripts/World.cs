@@ -34,15 +34,16 @@ public class World : MonoBehaviour
 	void Start()
 	{
 		settings.SetActive(false);
-		if(logFile == null) logFile = Path.Combine(Application.persistentDataPath, "data.log");
-		if(id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-","");
-		//holoPanel.SetActive(false);
+		if (logFile == null) logFile = Path.Combine(Application.persistentDataPath, "data.log");
+		if (id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-", "");
 		Record("#start");
 	}
+
 	private void OnDestroy()
 	{
 		Record("#end");
 	}
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -74,40 +75,12 @@ public class World : MonoBehaviour
 			cameraRig.transform.localEulerAngles = new Vector3(cameraRig.transform.localEulerAngles.x,
 				cameraRig.transform.localEulerAngles.y + turnAngle, cameraRig.transform.localEulerAngles.z);
 		}
-
-		/*
-		//NOTE(Kristof): Grabbing the holoPanel
-		{
-			if (handedness == Handedness.Right)
-			{
-				//NOTE(Kristof): holoPanel child left hand
-				holoPanel.transform.parent = avatarGrabberLeft.transform.GetChild(0).transform;
-				holoPanel.transform.localPosition = new Vector3(0.03f, 0.09f, -0.04f);
-				holoPanel.transform.localEulerAngles = new Vector3(-30, -40, 17);
-			}
-			else
-			{
-				//NOTE(Kristof): holoPanel child right hand
-				holoPanel.transform.parent = avatarGrabberRight.transform.GetChild(0).transform;
-				holoPanel.transform.localPosition = new Vector3(-0.03f, 0.09f, -0.04f);
-				holoPanel.transform.localEulerAngles = new Vector3(-20, 55, -27);
-			}
-		}
-
-		//NOTE(Kristof): Toggling HoloPanel
-		{
-			if (OVRInput.GetUp(OVRInput.Button.Start))
-			{
-				holoPanel.SetActive(!holoPanel.activeSelf);
-			}
-		}
-		*/
 	}
 
 	public static void Record(string msg, params object[] args)
 	{
 		if (logFile == null) logFile = Path.Combine(Application.persistentDataPath, "data.log");
-		if(id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-","");
+		if (id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-", "");
 		var line = string.Format("{0}:{1}>{2}\n", DateTimeOffset.Now.UtcTicks, id, string.Format(msg, args));
 		File.AppendAllText(logFile, line);
 	}

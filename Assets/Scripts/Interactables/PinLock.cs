@@ -18,19 +18,12 @@ public class PinLock : MonoBehaviour
 	private static List<int> pin = new List<int>();
 	private static List<int> attempt = new List<int>();
 
-	// Use this for initialization
 	void Start()
 	{
 		buttons = Enumerable.Range(0, 10).ToArray();
 		info = transform.parent.GetComponentInChildren<Text>();
 		if (transform.parent.tag == "PinSetter") setter = true;
-		//Shuffle();
-	}
-
-
-	// Update is called once per frame
-	void Update()
-	{
+		Shuffle(); // TODO(Lander): this can be called before the others are initialised. 
 	}
 
 	private void Shuffle()
@@ -87,13 +80,14 @@ public class PinLock : MonoBehaviour
 		var input = Int32.Parse(pinButton.GetComponentInChildren<Text>().text);
 		attempt.Add(input);
 		parent.info.text = new string('*', attempt.Count);
-		//parent.Shuffle();
+		parent.Shuffle(); 
 	}
 
 	public static void Ok(PinLock parent)
 	{
 		if (attempt.Count == 0) return;
 		World.Record("pincode:attempt:[{0}]", string.Join(",", attempt.Select(a => a.ToString()).ToArray()));
+
 		var check = CheckPin();
 
 		if (!parent.setter)
@@ -111,7 +105,7 @@ public class PinLock : MonoBehaviour
 				{
 					parent.needsConfirmation = false;
 					parent.setter = false;
-					parent.info.text = "pin confirmed";
+					parent.info.text = "PIN CONFIRMED";
 					parent.GetComponentInParent<Door>().Open();
 				}
 				else
@@ -119,7 +113,7 @@ public class PinLock : MonoBehaviour
 
 					parent.needsConfirmation = false;
 					pin.Clear();
-					parent.info.text = "pin mismatch, try again!";
+					parent.info.text = "PIN MISMATCH\n TRY AGAIN";
 				}
 			}
 			else
@@ -128,11 +122,11 @@ public class PinLock : MonoBehaviour
 				{
 					pin = attempt.ToList(); // TODO(Lander): check if this copies by value, not reference
 					parent.needsConfirmation = true;
-					parent.info.text = "Confirm pin";
+					parent.info.text = "cONFIRM PIN";
 				}
 				else
 				{
-					parent.info.text = "pin is too short!";
+					parent.info.text = "PIN IS TOO SHORT";
 				}
 			}
 		}

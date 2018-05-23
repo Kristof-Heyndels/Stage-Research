@@ -157,6 +157,7 @@ public class PatternLock : MonoBehaviour
 	public static void SphereHit(PatternSphere g, PatternLock parent)
 	{
 		// TODO(Lander): test behaviour of connecting two dots from different parents.
+		parent.lineRenderer.enabled = true;
 
 		if (parent.historySphere.Count == 0 && (parent.Con1 > 0.5f || (parent.Con2 > 0.5f)))
 		{

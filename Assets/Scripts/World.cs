@@ -14,7 +14,7 @@ public class World : MonoBehaviour
 	public Handedness handedness;
 	public GameObject cameraRig;
 	public GameObject playArea;
-	public GameObject holoPanel;
+	//public GameObject holoPanel;
 
 	public GameObject avatarGrabberLeft;
 	public GameObject avatarGrabberRight;
@@ -32,9 +32,9 @@ public class World : MonoBehaviour
 	void Start()
 	{
 		settings.SetActive(false);
-		holoPanel.SetActive(false);
 		logFile = Path.Combine(Application.persistentDataPath, "data.log");
 		id = Guid.NewGuid().ToString().ToLower().Replace("-","");
+		//holoPanel.SetActive(false);
 		Record("#start");
 	}
 	private void OnDestroy()
@@ -73,6 +73,7 @@ public class World : MonoBehaviour
 				cameraRig.transform.localEulerAngles.y + turnAngle, cameraRig.transform.localEulerAngles.z);
 		}
 
+		/*
 		//NOTE(Kristof): Grabbing the holoPanel
 		{
 			if (handedness == Handedness.Right)
@@ -98,6 +99,7 @@ public class World : MonoBehaviour
 				holoPanel.SetActive(!holoPanel.activeSelf);
 			}
 		}
+		*/
 	}
 
 	public static void Record(string msg, params object[] args)

@@ -26,6 +26,18 @@ public class UIObjectFinder
 		{
 			obj.GetComponent<PatternSphere>().Execute();
 		}
+		if (obj.GetComponent<PinButton>() != null)
+		{
+			obj.GetComponent<PinButton>().Execute();
+		}
+		if (obj.GetComponent<OkButton>() != null)
+		{
+			obj.GetComponent<OkButton>().Execute();
+		}
+		if (obj.GetComponent<HoloUI>() != null)
+		{
+			obj.GetComponent<HoloUI>().Execute();
+		}
 	}
 
 }

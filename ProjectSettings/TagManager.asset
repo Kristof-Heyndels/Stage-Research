@@ -12,6 +12,7 @@ TagManager:
   - HoloUI
   - Scanner
   - PatternSetter
+  - PinSetter
   layers:
   - Default
   - TransparentFX

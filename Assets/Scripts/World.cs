@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class World : MonoBehaviour
@@ -25,6 +26,7 @@ public class World : MonoBehaviour
 
 	private float oldPrimaryStick;
 	private float oldSecondaryStick;
+
 	private static string logFile;
 	private static string id;
 
@@ -104,6 +106,8 @@ public class World : MonoBehaviour
 
 	public static void Record(string msg, params object[] args)
 	{
+		if (logFile == null) logFile = Path.Combine(Application.persistentDataPath, "data.log");
+		if(id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-","");
 		var line = string.Format("{0}:{1}>{2}\n", DateTimeOffset.Now.UtcTicks, id, string.Format(msg, args));
 		File.AppendAllText(logFile, line);
 	}

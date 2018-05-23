@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+// TODO(Lander): check if the line renderer is drawn correctly
 public class PatternLock : MonoBehaviour
 {
 

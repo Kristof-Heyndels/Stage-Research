@@ -32,8 +32,8 @@ public class World : MonoBehaviour
 	void Start()
 	{
 		settings.SetActive(false);
-		logFile = Path.Combine(Application.persistentDataPath, "data.log");
-		id = Guid.NewGuid().ToString().ToLower().Replace("-","");
+		if(logFile == null) logFile = Path.Combine(Application.persistentDataPath, "data.log");
+		if(id == null) id = Guid.NewGuid().ToString().ToLower().Replace("-","");
 		//holoPanel.SetActive(false);
 		Record("#start");
 	}

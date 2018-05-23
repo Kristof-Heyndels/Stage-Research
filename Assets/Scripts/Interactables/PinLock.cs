@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ public class PinLock : MonoBehaviour
 
 	private static List<int> pin = new List<int>();
 	private static List<int> attempt = new List<int>();
+	private static Stopwatch stopwatch = new Stopwatch();
 
 	void Start()
 	{
@@ -77,6 +79,7 @@ public class PinLock : MonoBehaviour
 	/// <param name="parent">the parent of the button</param>
 	public static void Click(PinButton pinButton, PinLock parent)
 	{
+		if (!stopwatch.IsRunning) stopwatch.Start();
 		var input = Int32.Parse(pinButton.GetComponentInChildren<Text>().text);
 		attempt.Add(input);
 		parent.info.text = new string('*', attempt.Count);
@@ -86,7 +89,11 @@ public class PinLock : MonoBehaviour
 	public static void Ok(PinLock parent)
 	{
 		if (attempt.Count == 0) return;
+		stopwatch.Stop();
+
 		World.Record("pincode:attempt:[{0}]", string.Join(",", attempt.Select(a => a.ToString()).ToArray()));
+		World.Record("pincode:elapsed:{0}", stopwatch.Elapsed);
+		stopwatch.Reset();
 
 		var check = CheckPin();
 

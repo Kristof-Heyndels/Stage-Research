@@ -146,7 +146,7 @@ public class ColourPickerTestManager : MonoBehaviour
 						infoText.text = "Engage the holographic cube to begin the next stage.";
 
 						colourCubeContainer.colourCubes[0].SetActive(true);
-						colourCubeContainer.transform.position = new Vector3(Camera.main.transform.position.x - 0.6f, colourCubeContainer.transform.position.y, Camera.main.transform.position.z);
+						colourCubeContainer.transform.position = new Vector3(Camera.main.transform.position.x - 0.6f, Camera.main.transform.position.y - 0.25f, Camera.main.transform.position.z);
 					}
 					else if (cubeTest)
 					{
